@@ -13,6 +13,15 @@ class ImageStore {
     
     func setImage(_ image: UIImage, forKey key: String) {
         cache.setObject(image, forKey: key as NSString)
+
+        let url = imageURL(forKey: key)
+        if let data = image.pngData() {
+            do {
+                try data.write(to: url, options: [.atomic])
+            } catch {
+                print("Error saving image to disk: \(error)")
+            }
+        }
     }
     
     func image(forKey key: String) -> UIImage? {
